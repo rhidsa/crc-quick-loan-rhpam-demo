@@ -57,7 +57,7 @@ REM
 	set created=false
 
 	:loop
-  set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --write-out "%{http_code}" --silent --head --fail "http://insecure-%OCP_APP%-rhpamcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces"
+  set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --write-out "%{http_code}" --silent --head --fail "http://insecure-%OCP_APP%-rhdmcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces"
 
 	if %status% EQU 200 {
 		set created=true
@@ -98,7 +98,7 @@ REM
 
 	set "_return=0"
 
-	set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --write-out "%{http_code}" --silent --head --fail "http://insecure-%OCP_APP%-rhpamcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces/MySpace/projects/%PRJ_ID%"
+	set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --write-out "%{http_code}" --silent --head --fail "http://insecure-%OCP_APP%-rhdmcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces/MySpace/projects/%PRJ_ID%"
 
 	if %status% EQU 200 {
     echo Demo project already exists...
@@ -127,7 +127,7 @@ REM
 	set created=false
 
 	:loop
-	set  status=call curl -H "Accept: application/json" -H "Content-Type: application/json" -f -X POST -d "{\"name\":\"%PRJ_ID%\", \"gitURL\":\"%PRJ_REPO%\"}" -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --silent --output NUL --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhpamcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/git/clone"
+	set  status=call curl -H "Accept: application/json" -H "Content-Type: application/json" -f -X POST -d "{\"name\":\"%PRJ_ID%\", \"gitURL\":\"%PRJ_REPO%\"}" -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --silent --output NUL --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/git/clone"
 
   if %status% EQU 202 {
     set created=true
@@ -166,7 +166,7 @@ REM
 
 	set "_return=0"
 
-	set status=call curl -H "Accept: application/json" -H "Content-Type: application/json" -f -X POST -d "{ \"name\":\"MySpace\", \"description\":null, \"projects\":[], \"owner\":\"%KIE_ADMIN_USER%\", \"defaultGroupId\":\"com.myspace\"}" -u "%KIE_ADMIN_USER%:%KIE_ADMIN_PWD%" --silent --output NUL --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhpamcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces"
+	set status=call curl -H "Accept: application/json" -H "Content-Type: application/json" -f -X POST -d "{ \"name\":\"MySpace\", \"description\":null, \"projects\":[], \"owner\":\"%KIE_ADMIN_USER%\", \"defaultGroupId\":\"com.myspace\"}" -u "%KIE_ADMIN_USER%:%KIE_ADMIN_PWD%" --silent --output NUL --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhdmcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces"
 
 	if %status% NEQ 202 {
 	  set "_return=1"
@@ -194,7 +194,7 @@ REM
 
 	:loop
 
-	set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --silent --head --fail --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhpamcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces/MySpace"
+	set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --silent --head --fail --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhdmcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces/MySpace"
 
 	if %status% EQU 200 {
     set created=true

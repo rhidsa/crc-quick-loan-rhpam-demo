@@ -73,23 +73,23 @@ function valid_ip()
 clear 
 
 echo
-echo "###################################################################"
-echo "##                                                               ##"   
-echo "##  Setting up the ${DEMO}         ##"
-echo "##                                                               ##"   
-echo "##                                                               ##"   
-echo "##  ####  #   # ####  #   #        #### #      ###  #   # ####   ##"
-echo "##  #   # #   # #   # ## ##   #   #     #     #   # #   # #   #  ##"
-echo "##  ####  ##### #   # # # #  ###  #     #     #   # #   # #   #  ##"
-echo "##  # #   #   # #   # #   #   #   #     #     #   # #   # #   #  ##"
-echo "##  #  #  #   # ####  #   #        #### #####  ###   ###  ####   ##"
-echo "##                                                               ##"   
-echo "##  brought to you by,                                           ##"   
-echo "##             ${AUTHORS}      ##"
-echo "##                                                               ##"   
+echo "#####################################################################"
+echo "##                                                                 ##"   
+echo "##  Setting up the ${DEMO}                        ##"
+echo "##                                                                 ##"   
+echo "##                                                                 ##"   
+echo "##  ####  #   # ####  #   #        #### #      ###  #   # ####     ##"
+echo "##  #   # #   # #   # ## ##   #   #     #     #   # #   # #   #    ##"
+echo "##  ####  ##### #   # # # #  ###  #     #     #   # #   # #   #    ##"
+echo "##  # #   #   # #   # #   #   #   #     #     #   # #   # #   #    ##"
+echo "##  #  #  #   # ####  #   #        #### #####  ###   ###  ####     ##"
+echo "##                                                                 ##"   
+echo "##  brought to you by,                                             ##"   
+echo "##             ${AUTHORS}        ##"
+echo "##                                                                 ##"   
 echo "##  ${PROJECT}  ##"
-echo "##                                                               ##"   
-echo "###################################################################"
+echo "##                                                                 ##"   
+echo "#####################################################################"
 echo
 
 # check for passed target IP.
@@ -227,7 +227,7 @@ fi
 echo
 echo "Patch the KIE-Server to use CORS support..."
 echo
-oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm${VERSION}-kieserver-cors:latest'}]"
+oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm${VERSION}-kieserver-cors:latest'}]" >/dev/null 2>&1
 
 if [ "$?" -ne "0" ]; then
 	echo
@@ -310,12 +310,12 @@ fi
 
 echo
 echo "Retrieve KIE-Server route anbd put into conifg file..."
-echo.
+echo
 KIESERVER_ROUTE=$(oc get route insecure-${OCP_APP}-kieserver | awk 'FNR > 1 {print $2}')
 sed s/.*kieserver_host.*/\ \ \ \ \'kieserver_host\'\ :\ \'$KIESERVER_ROUTE\',/g ${PRJ_DIR}/application-ui/config/config.js.orig > ${PRJ_DIR}/application-ui/config/config.js.temp.1
-sed s/.*kieserver_port.*/\ \ \ \ \'kieserver_port\'\ :\ \'80\',/g ${PRJ_DIR}/application-ui/config/config.js.temp.1 > ${PRJ_DIR}/application-ui/config/config.js.temp.2
+sed s/.*kieserver_port.*/\ \ \ \ \'kieserver_port\'\ :\ \'80\'',/g ${PRJ_DIR}/application-ui/config/config.js.temp.1 > ${PRJ_DIR}/application-ui/config/config.js.temp.2
 mv ${PRJ_DIR}/application-ui/config/config.js.temp.2 ${PRJ_DIR}/application-ui/config/config.js
-rm ${PRJ_DIR/application-ui/config/config.js.temp*
+rm ${PRJ_DIR}/application-ui/config/config.js.temp*
 
 echo
 echo "Creating config-map for client application..."
@@ -331,7 +331,7 @@ fi
 echo
 echo "Attaching config-map as volume to client application..."
 echo
-oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-applica    tion-config-map", "defaultMode": 420}}]}}}}'
+oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-application-config-map", "defaultMode": 420}}]}}}}' >/dev/null 2>&1
 
 
 if [ "$?" -ne "0" ]; then
@@ -340,7 +340,7 @@ if [ "$?" -ne "0" ]; then
 	exit
 fi
 
-oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-cl    ient-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}'
+oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-cl    ient-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}' >/dev/null 2>&1
 
 if [ "$?" -ne "0" ]; then
 	echo
@@ -351,7 +351,7 @@ fi
 echo
 echo "Patch the service to set targetPort to 3000..."
 echo
-oc patch svc/qlb-client-application --type='json' -p="[{'op': 'replace', 'path': '/spec/ports/0/targetPort', 'value': 3000}]"
+oc patch svc/qlb-client-application --type='json' -p="[{'op': 'replace', 'path': '/spec/ports/0/targetPort', 'value': 3000}]" >/dev/null 2>&1
 
 
 if [ "$?" -ne "0" ]; then
@@ -361,7 +361,7 @@ if [ "$?" -ne "0" ]; then
 fi
 
 echo
-echo ""Expose the client application service (route)..."
+echo "Expose the client application service (route)..."
 echo 
 oc expose svc/qlb-client-application
 
