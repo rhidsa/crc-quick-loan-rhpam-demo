@@ -54,6 +54,94 @@ Now log in to Red Hat Decision Manager to start developing containerized process
 
 Not sure how to get started with Red Hat Decision Manager? Try one of these <a href="https://bpmworkshop.gitlab.io/#/4" target="_blank">online workshops</a> to build a first project from scratch.
 
+Running the demo
+----------------
+1. Click on the "loan-application" project to open the Loan Application Demo project.
+
+2. The project has simple data model (Loan & Applicant) and single decision table (loan-application) which contains the 
+   loan approval rule set.
+
+3. Build and deploy version 1.0 of the project. Click on the "Build and Deploy" in the upper right corner.
+
+4. Go to "Menu -> Deploy -> Execution Servers" repository to see the loan-application_1.0 KIE Container deployed on the 
+   Decision Server.
+
+5. The decision server provides a Swagger UI that documents the full RESTful interface exposed by the server 
+   at: http://localhost:8080/kie-server/docs
+
+6. In the Swagger UI:
+   - navigate to "KIE Server and KIE containers"
+   - expand the "GET" operation for resource "/server/containers"
+   - click on "Try it out"
+   - leave the parameters blank and click on "Execute"
+   - when asked for credentials use: Username: kieserver, Password: kieserver1!
+   - observe the response, which lists the KIE Containers deployed on the server and their status (STARTED, STOPPED).
+
+7. We can use the Swagger UI to test our Loan Approval Decision Service. In the Swagger UI:
+   - navigate to "KIE session assets"
+   - expand the "POST" operation for resource "/server/containers/instances/{id}"
+   - click on "Try it out"
+   - set the "id" parameter to the name of the KIE Container that hosts our rules, in this case `loan-application_1.0`.
+   - set "Parameter content type" to `application/json`.
+   - set "Response content type" to `application/json`
+   - use the following request as the "body" parameter. Note that the `Loan` object has its `approved` attribute set to `false`:
+   ```
+   {
+      "lookup": "default-stateless-ksession",
+      "commands": [
+         {
+            "insert": {
+               "object": {
+                  "com.redhat.demo.qlb.loan_application.model.Applicant": {
+                     "creditScore":410,
+                     "name":"Billy Bob",
+                     "age":40,
+                     "yearlyIncome":90000
+                  }
+               },
+               "out-identifier":"applicant"
+            }
+         },
+         {
+            "insert": {
+               "object": {
+                  "com.redhat.demo.qlb.loan_application.model.Loan": {
+                     "amount":250000,
+                     "duration":10
+                  }
+               },
+               "out-identifier":"loan"
+            }
+         },
+         {
+            "start-process" : {
+               "processId" : "loan-application.loan-application-decision-flow",
+               "parameter" : [ ],
+               "out-identifier" : null
+            }
+         }
+      ]
+   }
+   ```
+   - observe the result. The Quick Loan Bank rules have fired and determined that, based on the credit score of the 
+     application, and the amount of the loan, the loan can be approved. The `approved` attribute of the `Loan` has been 
+     set to `true`.
+
+
+Running demo with frontend UI
+-----------------------------
+1. Navigate to the *support/application-ui/* directory. The installation should have built the UI, but if not, manually 
+run the command `npm install` to install the required modules. Start the client application by running `npm start`. This 
+will start the NodeJS HTTP server and open the Quick Loan Bank client application in your browser (http://localhost:3000). 
+Try to submit a new loan request using the same data as shown the JSON file at above. Try to enter different values to 
+see a loan get disapproved, for example, change above applicant age from 40 to 80 for rejectoin based on age.
+
+2. You can change the various rules as desired, change the version of the project, and redeploy a new version to a new 
+KIE Container (allowing you to serve multiple versions of the same rule set at the same time on the same decision server). 
+You can also build a new version of the project and use the Version Configuration tab of the container definition (in the 
+Execution Servers screen) to manage the container using the UPGRADE button to pull the new version.
+
+
 
 Notes:
 -----

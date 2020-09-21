@@ -296,7 +296,7 @@ fi
 echo
 echo "Creating a new application using CRC Node.js catalog image..."
 echo
-oc new-app nodejs:12~https://github.com/redhatdemocentral/${OCP_APP}#master \
+oc new-app nodejs:12~https://gitlab.com/redhatdemocentral/crc-${OCP_APP}-demo.git \
 	--name=qlb-client-application \
 	--context-dir=${PRJ_DIR}/application-ui \
 	-e NODE_ENV=development \
@@ -329,25 +329,25 @@ if [ "$?" -ne "0" ]; then
 	exit
 fi
 
-echo
-echo "Attaching config-map as volume to client application..."
-echo
-oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-application-config-map", "defaultMode": 420}}]}}}}' >/dev/null 2>&1
+#echo
+#echo "Attaching config-map as volume to client application..."
+#echo
+#oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-application-config-map", "defaultMode": 420}}]}}}}' >/dev/null 2>&1
 
 
-if [ "$?" -ne "0" ]; then
-	echo
-	echo "Error occurred during 'oc patch' client volumes command!"
-	exit
-fi
+#if [ "$?" -ne "0" ]; then
+#	echo
+#	echo "Error occurred during 'oc patch' client volumes command!"
+#	exit
+#fi
 
-oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-cl    ient-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}' >/dev/null 2>&1
+#oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-cl    ient-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}' >/dev/null 2>&1
 
-if [ "$?" -ne "0" ]; then
-	echo
-	echo "Error occurred during 'oc patch' client containers command!"
-	exit
-fi
+#if [ "$?" -ne "0" ]; then
+#	echo
+#	echo "Error occurred during 'oc patch' client containers command!"
+#	exit
+#fi
 
 echo
 echo "Patch the service to set targetPort to 3000..."
@@ -378,7 +378,7 @@ echo "=                                                                      ="
 echo "=  Login to Red Hat Decision Manager to exploring process automation   ="
 echo "=  development at:                                                     ="
 echo "=                                                                      ="
-echo "=   https://${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}     ="
+echo "=   https://${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS} ="
 echo "=                                                                      ="
 echo "=    Log in: [ u:erics / p:redhatdm1! ]                                ="
 echo "=                                                                      ="
