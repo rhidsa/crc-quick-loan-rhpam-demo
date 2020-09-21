@@ -321,7 +321,7 @@ fi
 echo
 echo "Creating config-map for client application..."
 echo 
-oc create configmap qlb-client-application-config-map --from-file=${PRJ_DIR}/application-ui/config/config.js.crc
+oc create configmap qlb-client-application-config-map --from-file=${PRJ_DIR}/application-ui/config/config.js
 
 if [ "$?" -ne "0" ]; then
 	echo
