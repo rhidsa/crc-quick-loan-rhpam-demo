@@ -196,9 +196,10 @@ echo
 echo "Processing to setup KIE-Server with CORS support..."
 echo
 oc process -f ${SUP_DIR}/rhdm${VERSION}-kieserver-cors.yaml \
-	-p DOCKERFILE_REPOSITORY="http://www.github.com/redhatdemocentral/crc-quick-loan-bank-demo" \
+	-p DOCKERFILE_REPOSITORY="http://www.gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo" \
 	-p DOCKERFILE_REF="master" \
-	-p DOCKERFILE_CONTEXT=${SUP_DIR}/rhdm${VERSION}-kieserver-cors 
+	-p DOCKERFILE_CONTEXT=${SUP_DIR}/rhdm${VERSION}-kieserver-cors \
+	| oc create -f -
  
 if [ "$?" -ne "0" ]; then
 	echo
