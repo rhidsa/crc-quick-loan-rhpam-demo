@@ -48,8 +48,9 @@ function container_ready()
 	# check if container is ready.
 	local count=0
 	local created=false
+
 	echo
-	echo "DEBUG: waiting on http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces"
+	echo "Waiting on availability of container: http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces"
 	echo
 
 	until [ $count -gt $DELAY ]
@@ -82,17 +83,13 @@ function container_ready()
 function project_exists()
 {
 	echo
-	echo "DEBUG: chekcing on http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/projects/${PRJ_ID}"
+	echo "Checking if project exists: http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/projects/${PRJ_ID}"
 	echo
 
 	# checking if project already exists.
 	status=$(curl -u $KIE_ADMIN_USER:$KIE_ADMIN_PWD --output /dev/null \
   --write-out "%{http_code}" --silent --head --fail                \
 	"http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/projects/${PRJ_ID}")
-
-  echo
-	echo "DEBUG: The returned status is: '${status}'"
-	echo
 
   if [ ${status} -eq "200" ]; then
 		echo "Demo project already exists..."
@@ -111,7 +108,7 @@ function project_imported()
 	local created=false
 	
 	echo
-  echo "DEBUG: checking on http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/git/clone"
+  echo "Checking if project imported at: http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace/git/clone"
 	echo
 	
 	until [ $count -gt $DELAY ]
@@ -146,17 +143,13 @@ function project_imported()
 function create_project_space()
 {
 	echo
-	echo "DEBUG: checking on http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces"
+	echo "Checking if space created at: http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces"
 	echo
 
 	status=$(curl -H "Accept: application/json" -H "Content-Type: application/json" -f -X POST \
 		-d "{ \"name\":\"MySpace\", \"description\":null, \"projects\":[], \"owner\":\"$KIE_ADMIN_USER\", \"defaultGroupId\":\"com.myspace\"}" \
 		-u "$KIE_ADMIN_USER:$KIE_ADMIN_PWD" --silent --output /dev/null --write-out "%{http_code}" \
 		"http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces")
-
-	echo
-	echo "DEBUG: The status returned was: '${status}'"
-  echo
 
 	if [ ${status} -ne "202" ] ; then
 		echo "Problem creating the space to import project to..."
@@ -174,7 +167,7 @@ function validate_project_space()
 	local created=false
 	
 	echo
-	echo "DEBUG: checking on http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace"
+	echo "Validting project space at:  http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace"
 	echo
 	
 	until [ $count -gt $DELAY ]
@@ -182,10 +175,6 @@ function validate_project_space()
 		status=$(curl -u $KIE_ADMIN_USER:$KIE_ADMIN_PWD --output /dev/null \
 			--silent --head --fail --write-out "%{http_code}" \
 			"http://insecure-${OCP_APP}-rhdmcentr-${OCP_PRJ}.${HOST_APPS}/rest/spaces/MySpace")
-
-		echo
-		echo "DEBUG: The status returned was: '${status}'"
-		echo
 
 		if [ ${status} -eq "200" ] ; then
 			created=true
