@@ -309,16 +309,6 @@ if [ "$?" -ne "0" ]; then
 	exit
 fi
 
-#echo
-#echo "Retrieve KIE-Server route anbd put into conifg file..."
-#echo
-#KIESERVER_ROUTE=$(oc get route insecure-${OCP_APP}-kieserver | awk 'FNR > 1 {print $2}')
-
-#sed s/.*kieserver_host.*/\ \ \ \ \'kieserver_host\'\ :\ \'$KIESERVER_ROUTE\',/g ${PRJ_DIR}/application-ui/config/config.js.orig > ${PRJ_DIR}/application-ui/config/config.js.temp.1
-#sed s/.*kieserver_port.*/\ \ \ \ \'kieserver_port\'\ :\ \'80\',/g ${PRJ_DIR}/applicaiton-ui/config/config.js.temp.1 > ${PRJ_DIR}/applicaiton-ui/config/config.js.temp.2
-#mv ${PRJ_DIR}/application-ui/config/config.js.temp.2 ${PRJ_DIR}/application-ui/config/config.js
-#rm ${PRJ_DIR}/application-ui/config/config.js.temp*
-
 echo
 echo "Creating config-map for client application..."
 echo 
