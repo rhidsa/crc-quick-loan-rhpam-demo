@@ -36,7 +36,7 @@ objects:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: rhdm-kieserver-rhel8:7.7.0
+          name: rhdm-kieserver-rhel8
       type: Docker
     triggers:
     - type: ConfigChange

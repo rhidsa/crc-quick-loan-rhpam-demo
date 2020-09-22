@@ -148,6 +148,11 @@ if [ "$?" -ne "0" ]; then
 fi
 
 echo
+echo "Creating a new project..."
+echo
+oc new-project "$OCP_PRJ"
+
+echo
 echo "Check for availability of correct version of Red Hat Decision Manager Authoring template..."
 echo
 oc get templates -n openshift rhdm${VERSION}-authoring >/dev/null 2>&1
@@ -161,11 +166,6 @@ if [ "$?" -ne "0" ]; then
 	echo
 	exit
 fi
-
-echo
-echo "Creating a new project..."
-echo
-oc new-project "$OCP_PRJ"
 
 echo
 echo "Setting up a secrets and service accounts..."
@@ -228,7 +228,7 @@ fi
 echo
 echo "Patch the KIE-Server to use CORS support..."
 echo
-oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm${VERSION}-kieserver-cors:latest'}]" >/dev/null 2>&1
+oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm${VERSION}-kieserver-cors:latest'}]"
 
 if [ "$?" -ne "0" ]; then
 	echo
@@ -330,30 +330,30 @@ if [ "$?" -ne "0" ]; then
 	exit
 fi
 
-#echo
-#echo "Attaching config-map as volume to client application..."
-#echo
-#oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-application-config-map", "defaultMode": 420}}]}}}}' >/dev/null 2>&1
+echo
+echo "Attaching config-map as volume to client application..."
+echo
+oc patch deployment/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-application-config-map", "defaultMode": 420}}]}}}}' 
 
 
-#if [ "$?" -ne "0" ]; then
-#	echo
-#	echo "Error occurred during 'oc patch' client volumes command!"
-#	exit
-#fi
+if [ "$?" -ne "0" ]; then
+	echo
+	echo "Error occurred during 'oc patch' client volumes command!"
+	exit
+fi
 
-#oc patch dc/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-cl    ient-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}' >/dev/null 2>&1
+oc patch deployment/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-client-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}'
 
-#if [ "$?" -ne "0" ]; then
-#	echo
-#	echo "Error occurred during 'oc patch' client containers command!"
-#	exit
-#fi
+if [ "$?" -ne "0" ]; then
+	echo
+	echo "Error occurred during 'oc patch' client containers command!"
+	exit
+fi
 
 echo
 echo "Patch the service to set targetPort to 3000..."
 echo
-oc patch svc/qlb-client-application --type='json' -p="[{'op': 'replace', 'path': '/spec/ports/0/targetPort', 'value': 3000}]" >/dev/null 2>&1
+oc patch svc/qlb-client-application --type='json' -p="[{'op': 'replace', 'path': '/spec/ports/0/targetPort', 'value': 3000}]"
 
 
 if [ "$?" -ne "0" ]; then
