@@ -161,13 +161,13 @@ See the tagged releases for the following versions of the product:
 - v1.0 - Supporting CodeReady Container 1.15.0 with OpenShift Container Platform 4.5 using Red Hat Decision Manager 7.7 and Node.js provided container
   images to automatically install the Quick Loan Bank demo.
 
-![OCP build](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-build-ocp.png)
+![OCP build app](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-build-app.png)
 
 ![OCP build kieserver](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-build-kieserver.png)
 
 ![OCP build rhdmauthor](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-build-rhdmauthor.png)
 
-![RHDM OCP console](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-ocp-console.png)
+![RHDM OCP app](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-ocp-app.png)
 
 ![RHDM OCP](https://gitlab.com/redhatdemocentral/rhcs-rhdm-install-demo/raw/master/docs/demo-images/rhdm-ocp.png)
 
