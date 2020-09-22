@@ -226,6 +226,13 @@ if [ "$?" -ne "0" ]; then
 fi
 
 echo
+echo "Setting up old openshift controller strategy..."
+echo
+# Disable the OpenShift Startup Strategy and revert to the old Controller Strategy
+oc set env dc/${OCP_APP}-rhdmcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=false
+oc set env dc/${OCP_APP}-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy KIE_SERVER_CONTROLLER_USER=${KIE_ADMIN_USER} KIE_SERVER_CONTROLLER_PWD=${KIE_ADMIN_PWD} KIE_SERVER_CONTROLLER_SERVICE=${OCP_APP}-rhdmcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws  KIE_SERVER_ROUTE_NAME=insecure-${OCP_APP}-kieserver
+
+echo
 echo "Patch the KIE-Server to use CORS support..."
 echo
 oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm${VERSION}-kieserver-cors:latest'}]"
