@@ -161,13 +161,14 @@ See the tagged releases for the following versions of the product:
 - v1.0 - Supporting CodeReady Container 1.15.0 with OpenShift Container Platform 4.5 using Red Hat Decision Manager 7.7 and Node.js provided container
   images to automatically install the Quick Loan Bank demo.
 
-![OCP build app](https://gitlab.com/redhatdemocentral/crc-quick-loadn-bank-demo/raw/master/docs/demo-images/rhdm-build-app.png)
 
-![OCP build kieserver](https://gitlab.com/redhatdemocentral/crc-quick-loadn-bank-demo/raw/master/docs/demo-images/rhdm-build-kieserver.png)
+![OCP build app](https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo/-/raw/master/docs/demo-images/rhdm-build-app.png)
 
-![OCP build rhdmauthor](https://gitlab.com/redhatdemocentral/crc-quick-loadn-bank-demo/raw/master/docs/demo-images/rhdm-build-rhdmauthor.png)
+![OCP build kieserver](https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo/-/raw/master/docs/demo-images/rhdm-build-kieserver.png)
 
-![RHDM OCP app](https://gitlab.com/redhatdemocentral/crc-quick-loadn-bank-demo/raw/master/docs/demo-images/rhdm-ocp-app.png)
+![OCP build rhdmauthor](https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo/-/raw/master/docs/demo-images/rhdm-build-rhdmauthor.png)
 
-![RHDM OCP](https://gitlab.com/redhatdemocentral/crc-quick-loadn-bank-demo/raw/master/docs/demo-images/rhdm-ocp.png)
+![RHDM OCP app](https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo/-/raw/master/docs/demo-images/rhdm-ocp-app.png)
+
+![RHDM OCP](https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo/-/raw/master/docs/demo-images/rhdm-ocp.png)
 
