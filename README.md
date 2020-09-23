@@ -66,7 +66,7 @@ Running the demo
 
 3. Build and deploy version 1.0 of the project. Click on the "Build and Deploy" in the upper right corner.
 
-4. Go to "Menu -> Deploy -> Execution Servers" repository to see the loan-application_1.0 KIE Container deployed on the 
+4. Go to "Menu -> Deploy -> Execution Servers" repository to see the 'loan-application_1.0' KIE Container deployed on the 
    Decision Server.
 
 5. The decision server provides a Swagger UI that documents the full RESTful interface exposed by the server 
@@ -133,18 +133,39 @@ Running the demo
 
 Running demo with frontend UI
 -----------------------------
-TODO: update for OCP container app...
-1. Navigate to the *support/application-ui/* directory. The installation should have built the UI, but if not, manually 
-run the command `npm install` to install the required modules. Start the client application by running `npm start`. This 
-will start the NodeJS HTTP server and open the Quick Loan Bank client application in your browser (http://localhost:3000). 
-Try to submit a new loan request using the same data as shown the JSON file at above. Try to enter different values to 
-see a loan get disapproved, for example, change above applicant age from 40 to 80 for rejectoin based on age.
+1. Log in to the decision manager business central dashboard at: http://insecure-quick-loan-bank-rhdmcentr-appdev-in-cloud.apps-crc.testing
+   with u:erics and p:redhatdm1!
 
-2. You can change the various rules as desired, change the version of the project, and redeploy a new version to a new 
-KIE Container (allowing you to serve multiple versions of the same rule set at the same time on the same decision server). 
-You can also build a new version of the project and use the Version Configuration tab of the container definition (in the 
-Execution Servers screen) to manage the container using the UPGRADE button to pull the new version.
+2. Click on the "loan-application" project to open the Loan Application Demo project.
 
+2. The project has simple data model (Loan & Applicant) and single decision table (loan-application) which contains the 
+   loan approval rule set.
+
+3. Build and deploy version 1.0 of the project. Click on the "Build and Deploy" in the upper right corner.
+
+4. Go to "Menu -> Deploy -> Execution Servers" repository to see the 'loan-application_1.0' KIE Container deployed on the 
+   Decision Server.
+
+5. Open the deployed Quick Loan Bank application form: http://qlb-client-application-appdev-in-cloud.apps-crc.testing
+
+6. Fill in the form as follows and submit for evalutaion:
+
+   ```
+   Name: Eric D. Schabell
+   
+   Age: 40
+
+   Credit Score: 410
+
+   Yearly Income: 90000
+
+   Ammount: 250000
+
+   Duration: 10
+   ```
+
+Try to enter different values to see a loan get disapproved, for example, change above applicant age from 40 to 80 for 
+rejectoin based on age.
 
 
 Notes:
@@ -157,14 +178,12 @@ Supporting Articles
 - [TBD]()
 
 
-
 Released versions
 -----------------
 See the tagged releases for the following versions of the product:
 
 - v1.0 - Supporting CodeReady Container 1.15.0 with OpenShift Container Platform 4.5 using Red Hat Decision Manager 7.7 and Node.js provided container
   images to automatically install the Quick Loan Bank demo.
-
 
 ![OCP build app](https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo/-/raw/master/docs/demo-images/rhdm-build-app.png)
 
