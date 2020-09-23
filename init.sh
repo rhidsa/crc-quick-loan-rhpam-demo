@@ -1,6 +1,6 @@
 #!/bin/sh 
 DEMO="CRC Quick Loan Bank Demo"
-AUTHORS="Andrew Block, Eric D. Schabell, Duncan Doyle"
+AUTHORS="Duncan Doyle, Dana Gutride, Marcos Entenza Garcia, Eric D. Schabell"
 PROJECT="git@gitlab.com:redhatdemocentral/crc-quick-loan-bank-demo.git"
 SRC_DIR=./installs
 PRJ_DIR=./projects
@@ -73,23 +73,23 @@ function valid_ip()
 clear 
 
 echo
-echo "#####################################################################"
-echo "##                                                                 ##"   
-echo "##  Setting up the ${DEMO}                        ##"
-echo "##                                                                 ##"   
-echo "##                                                                 ##"   
-echo "##  ####  #   # ####  #   #        #### #      ###  #   # ####     ##"
-echo "##  #   # #   # #   # ## ##   #   #     #     #   # #   # #   #    ##"
-echo "##  ####  ##### #   # # # #  ###  #     #     #   # #   # #   #    ##"
-echo "##  # #   #   # #   # #   #   #   #     #     #   # #   # #   #    ##"
-echo "##  #  #  #   # ####  #   #        #### #####  ###   ###  ####     ##"
-echo "##                                                                 ##"   
-echo "##  brought to you by,                                             ##"   
-echo "##             ${AUTHORS}        ##"
-echo "##                                                                 ##"   
-echo "##  ${PROJECT}  ##"
-echo "##                                                                 ##"   
-echo "#####################################################################"
+echo "###########################################################################"
+echo "##                                                                       ##"   
+echo "##  Setting up the ${DEMO}                              ##"
+echo "##                                                                       ##"   
+echo "##  ####  #   # ####  #   #        #### #      ###  #   # ####           ##"
+echo "##  #   # #   # #   # ## ##   #   #     #     #   # #   # #   #          ##"
+echo "##  ####  ##### #   # # # #  ###  #     #     #   # #   # #   #          ##"
+echo "##  # #   #   # #   # #   #   #   #     #     #   # #   # #   #          ##"
+echo "##  #  #  #   # ####  #   #        #### #####  ###   ###  ####           ##"
+echo "##                                                                       ##"   
+echo "##  brought to you by,                                                   ##"   
+echo "##                                                                       ##"   
+echo "##  ${AUTHORS}  ##"
+echo "##                                                                       ##"   
+echo "##  ${PROJECT}        ##"
+echo "##                                                                       ##"   
+echo "###########################################################################"
 echo
 
 # check for passed target IP.
