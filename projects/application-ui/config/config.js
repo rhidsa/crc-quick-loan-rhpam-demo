@@ -6,5 +6,5 @@ var ENV = {
     'kieserver_contextroot' : '',
     'kieserver_containerId' : 'loan-application_1.0',
     'kieserver_user' : 'erics',
-    'kieserver_password' : 'redhatdm!'
+    'kieserver_password' : 'redhatdm1!'
 };
