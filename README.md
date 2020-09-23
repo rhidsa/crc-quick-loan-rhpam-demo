@@ -56,7 +56,10 @@ Not sure how to get started with Red Hat Decision Manager? Try one of these <a h
 
 Running the demo
 ----------------
-1. Click on the "loan-application" project to open the Loan Application Demo project.
+1. Log in to the decision manager business central dashboard at: http://insecure-quick-loan-bank-rhdmcentr-appdev-in-cloud.apps-crc.testing
+   with u:erics and p:redhatdm1!
+
+2. Click on the "loan-application" project to open the Loan Application Demo project.
 
 2. The project has simple data model (Loan & Applicant) and single decision table (loan-application) which contains the 
    loan approval rule set.
@@ -67,14 +70,14 @@ Running the demo
    Decision Server.
 
 5. The decision server provides a Swagger UI that documents the full RESTful interface exposed by the server 
-   at: http://localhost:8080/kie-server/docs
+   at: http://insecure-quick-loan-bank-kieserver-appdev-in-cloud.apps-crc.testing/docs
 
 6. In the Swagger UI:
    - navigate to "KIE Server and KIE containers"
    - expand the "GET" operation for resource "/server/containers"
    - click on "Try it out"
    - leave the parameters blank and click on "Execute"
-   - when asked for credentials use: Username: kieserver, Password: kieserver1!
+   - when asked for credentials use: Username: erics, Password: redhatdm!
    - observe the response, which lists the KIE Containers deployed on the server and their status (STARTED, STOPPED).
 
 7. We can use the Swagger UI to test our Loan Approval Decision Service. In the Swagger UI:
@@ -130,6 +133,7 @@ Running the demo
 
 Running demo with frontend UI
 -----------------------------
+TODO: update for OCP container app...
 1. Navigate to the *support/application-ui/* directory. The installation should have built the UI, but if not, manually 
 run the command `npm install` to install the required modules. Start the client application by running `npm start`. This 
 will start the NodeJS HTTP server and open the Quick Loan Bank client application in your browser (http://localhost:3000). 
