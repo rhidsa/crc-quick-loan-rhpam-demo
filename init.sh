@@ -196,7 +196,7 @@ echo
 echo "Processing to setup KIE-Server with CORS support..."
 echo
 oc process -f ${SUP_DIR}/rhdm${VERSION}-kieserver-cors.yaml \
-	-p DOCKERFILE_REPOSITORY="http://www.gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo" \
+	-p DOCKERFILE_REPOSITORY="https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo.git" \
 	-p DOCKERFILE_REF="master" \
 	-p DOCKERFILE_CONTEXT=${SUP_DIR}/rhdm${VERSION}-kieserver-cors \
 	| oc create -f -
@@ -233,13 +233,24 @@ oc set env dc/${OCP_APP}-rhdmcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=fa
 oc set env dc/${OCP_APP}-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy KIE_SERVER_CONTROLLER_USER=${KIE_ADMIN_USER} KIE_SERVER_CONTROLLER_PWD=${KIE_ADMIN_PWD} KIE_SERVER_CONTROLLER_SERVICE=${OCP_APP}-rhdmcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws  KIE_SERVER_ROUTE_NAME=insecure-${OCP_APP}-kieserver
 
 echo
-echo "Patch the KIE-Server to use CORS support..."
+echo "Patch the KIE-Server name to use CORS support..."
 echo
 oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm${VERSION}-kieserver-cors:latest'}]"
 
 if [ "$?" -ne "0" ]; then
 	echo
-	echo "Error occurred during 'oc patch' kie-server cors support command!"
+	echo "Error occurred during 'oc patch' kie-server name cors support command!"
+	exit
+fi
+
+echo
+echo "Patch the KIE-Server namespace to use CORS support..."
+echo
+oc patch dc/${OCP_APP}-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/namespace', 'value': '${OCP_PRJ}'}]"
+
+if [ "$?" -ne "0" ]; then
+	echo
+	echo "Error occurred during 'oc patch' kie-server namespace cors support command!"
 	exit
 fi
 

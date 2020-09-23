@@ -37,6 +37,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: rhdm-kieserver-rhel8:7.7.0
+          namespace: openshift
       type: Docker
     triggers:
     - type: ConfigChange
