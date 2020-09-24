@@ -183,7 +183,7 @@ REM
 :endCreateProjectSpace
 
 
-:validateProjectSpace
+:validateProjectSpace [returnVariable]
 
   setlocal
 
@@ -197,7 +197,10 @@ REM
 	set status=call curl -u %KIE_ADMIN_USER%:%KIE_ADMIN_PWD% --output NUL --silent --head --fail --write-out "%{http_code}" "http://insecure-%OCP_APP%-rhdmcentr-%OCP_PRJ%.%HOST_APPS%/rest/spaces/MySpace"
 
 	if %status% EQU 200 {
-    set created=true
+	  set "_return=1"
+	  echo Problem validating the projectspace 
+	  echo.
+		exit /b %_return%
     GOTO :endLoop
   }
    

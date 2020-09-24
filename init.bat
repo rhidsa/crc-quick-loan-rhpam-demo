@@ -2,11 +2,13 @@
 setlocal enableextensions enabledelayedexpansion
 
 set PROJECT_HOME=%~dp0
-set DEMO=Red Hat Decision Manager Install Demo
-set AUTHORS=Andrew Block, Eric D. Schabell, Duncan Doyle
-set PROJECT=git@gitlab.com:redhatdemocentral/rhcs-rhdm-install-demo.git
+set DEMO=CRC Quick Loan Bank Demo
+set AUTHORS=Duncan Doyle, Dana Gutride, Marcos Entenza Garcia, Eric D. Schabell
+set PROJECT="git@gitlab.com:redhatdemocentral/crc-quick-loan-bank-demo.git"
 set SRC_DIR=%PROJECT_HOME%\installs
-set OC_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.3
+set PRJ_DIR=%PROJECT_HOME%\projects
+set SUP_DIR=%PROJECT_HOME%\support
+set OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/"
 
 REM Adjust these variables to point to an OCP instance.
 set OPENSHIFT_USER=developer
@@ -14,13 +16,23 @@ set OPENSHIFT_PWD=developer
 set HOST_IP=api.crc.testing   # set with OCP instance hostname or IP.
 set HOST_APPS=apps-crc.testing
 set HOST_PORT=6443
-set OCP_APP=rhcs-rhdm-install-demo
+set OCP_APP=quick-loan-bank
 set OCP_PRJ=appdev-in-cloud
 
 set KIE_ADMIN_USER=erics
 set KIE_ADMIN_PWD=redhatdm1!
 set PV_CAPACITY=1Gi
-set VERSION=74
+set VERSION=77
+
+REM Qlb project details.
+set PRJ_ID=loan-application
+set PRJ_REPO="https://github.com/jbossdemocentral/rhdm7-qlb-loan-demo-repo.git"
+
+REM waiting max 5 min various container functions to startup.
+set DELAY=300   
+
+REM import container functions.
+call support\container-functions.bat
 
 REM wipe screen.
 cls
@@ -38,7 +50,8 @@ echo ##  # #   #   # #   # #   #   #   #     #     #   # #   # #   #  ##"
 echo ##  #  #  #   # ####  #   #        #### #####  ###   ###  ####   ##"
 echo ##                                                               ##   
 echo ##  brought to you by,                                           ##   
-echo ##             %AUTHORS%      ##
+echo ##                                                               ##
+echo ##  %AUTHORS%      ##
 echo ##                                                               ##
 echo ##  %PROJECT%  ##
 echo ##                                                               ##   
@@ -62,7 +75,7 @@ if %argTotal% EQU 1 (
 	) else (
 		echo Please provide a valid IP that points to an OpenShift installation...
 		echo.
-        GOTO :printDocs
+    GOTO :printDocs
 	)
 
 )
@@ -89,9 +102,9 @@ if  %ERRORLEVEL% NEQ 0 (
 	GOTO :EOF
 )
 
-echo OpenShift commandline tooling is installed...
+echo OpenShift commandline tooling is installed
 echo.
-echo Logging in to OpenShift as %OPENSHIFT_USER%...
+echo Logging in to OpenShift as %OPENSHIFT_USER%
 echo.
 call oc login %HOST_IP%:%HOST_PORT% --password="%OPENSHIFT_PWD%" --username="%OPENSHIFT_USER%"
 
@@ -103,7 +116,7 @@ if not "%ERRORLEVEL%" == "0" (
 )
 
 echo.
-echo Check for availability of correct version of Red Hat Decision Manager Authoring template...
+echo Check for availability of correct version of Red Hat Decision Manager Authoring template
 echo.
 call oc get templates -n openshift rhdm%VERSION%-authoring 
 
@@ -112,21 +125,21 @@ if not %ERRORLEVEL% == 0 (
 	echo Error occurred during 'oc get template rhdm-authoring' command!
 	echo.
 	echo Your container platform is mising this tempalte versoin in your catalog: rhdm%VERSION%-authoring
-	echo Make sure you are using the correct version of Code Ready Containers as listed in project Readme file
+	echo Make sure you are using the correct version of CodeReady Containers as listed in project Readme file
 	echo.
 	GOTO :EOF
 )
 
 echo.
-echo Creating a new project...
+echo Creating a new project
 echo.
 call oc new-project %OCP_PRJ%
 
 echo.
-echo Setting up a secrets and service accounts...
+echo Setting up a secrets and service accounts
 echo.
-call oc process -f support/app-secret-template.yaml -p SECRET_NAME=decisioncentral-app-secret | oc create -f -
-call oc process -f support/app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | oc create -f -
+call oc process -f support/app-secret-template.yaml -p SECRET_NAME=decisioncentral-app-secret | call oc create -f -
+call oc process -f support/app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | call oc create -f -
 
 if not "%ERRORLEVEL%" == "0" (
 	echo.
@@ -136,7 +149,7 @@ if not "%ERRORLEVEL%" == "0" (
 )
 
 echo.
-echo Setting up secrets link for kieserver user and password...
+echo Setting up secrets link for kieserver user and password
 echo.
 call oc create secret generic rhpam-credentials --from-literal=KIE_ADMIN_USER=%KIE_ADMIN_USER% --from-literal=KIE_ADMIN_PWD=%KIE_ADMIN_PWD%
 
@@ -147,9 +160,20 @@ if not "%ERRORLEVEL%" == "0" (
   GOTO :EOF
 )
 
+echo.
+echo Processing to setup KIE-Server with CORS support
+echo.
+call oc process -f %SUP_DIR%/rhdm%VERSION%-kieserver-cors.yaml -p DOCKERFILE_REPOSITORY="https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo.git" -p DOCKERFILE_REF="master" -p DOCKERFILE_CONTEXT=%SUP_DIR%/rhdm%VERSION%-kieserver-cors | call oc create -f -
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc process' cors kie-server command!
+  echo.
+  GOTO :EOF
+)
 
 echo.
-echo Creating a new application using CRC catalog image...
+echo Creating a new application using CRC catalog image
 echo.
 call oc new-app --template=rhdm%VERSION%-authoring -p APPLICATION_NAME="%OCP_APP%" -p CREDENTIALS_SECRET="rhpam-credentials" -p DECISION_CENTRAL_HTTPS_SECRET="decisioncentral-app-secret" -p KIE_SERVER_HTTPS_SECRET="kieserver-app-secret" -p MAVEN_REPO_USERNAME="%KIE_ADMIN_USER%" -p MAVEN_REPO_PASSWORD="%KIE_ADMIN_PWD%" -p DECISION_CENTRAL_VOLUME_CAPACITY="%PV_CAPACITY%"
 
@@ -161,20 +185,185 @@ if not "%ERRORLEVEL%" == "0" (
 )
 
 echo.
-echo =================================================================================
-echo =                                                                               =
-echo =  Login to Red Hat decision Manager to start developing rules projects at:     =
-echo =                                                                               =
+echo Setting up old openshift controller strategy
+echo.
+REM Disable the OpenShift Startup Strategy and revert to the old Controller Strategy
+call oc set env dc/%OCP_APP%-rhdmcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=false
+call oc set env dc/%OCP_APP%-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy KIE_SERVER_CONTROLLER_USER=%KIE_ADMIN_USER% KIE_SERVER_CONTROLLER_PWD=%KIE_ADMIN_PWD% KIE_SERVER_CONTROLLER_SERVICE=%OCP_APP%-rhdmcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws  KIE_SERVER_ROUTE_NAME=insecure-%OCP_APP%-kieserver
+
+echo.
+echo Patch the KIE-Server name to use CORS support
+echo.
+call oc patch dc/%OCP_APP%-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/name', 'value': 'rhdm%VERSION%-kieserver-cors:latest'}]"
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc patch' kie-server name cors support command!
+	echo.
+	GOTO :EOF
+)
+
+echo.
+echo Patch the KIE-Server namespace to use CORS support
+echo.
+call oc patch dc/%OCP_APP%-kieserver --type='json' -p="[{'op': 'replace', 'path': '/spec/triggers/0/imageChangeParams/from/namespace', 'value': '%OCP_PRJ%'}]"
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc patch' kie-server namespace cors support command!
+	echo.
+	GOTO :EOF
+)
+
+echo Waiting until container is ready...
+echo.
+CALL :containerReady CONTAINER_READY
+
+if %CONTAINER_READY% (
+	echo.
+	echo The container has started
+	echo.
+) else (
+	echo Exiting now with CodeReady Container started, but not sure if
+	echo authoring environment is ready and did not install the demo project.
+	echo.
+	GOTO :EOF
+)
+
+echo Creating a space for the project import
+echo.
+CALL :createProjectSpace CREATE_SPACE
+
+if %CREATE_SPACE% (
+  echo Creation of new space for project import started
+  echo.
+) else (
+  echo Exiting now with CodeReady Container started, but not sure if
+  echo authoring environment is ready and did not install the demo project.
+	echo.
+	GOTO :EOF
+)
+
+echo Validating new project space creation
+echo.
+CALL :validateProjectSpace VALIDATED_SPACE
+
+if %VALIDATED_SPACE% (
+	echo Creation of space successfully validated
+	echo.
+) else ( 
+	echo Exiting now with CodeReady Container started, autorhing environment
+	echo is ready, but unable to import the demo project.
+	echo.
+	GOTO :EOF
+)
+
+echo Checking if project already exists, otherwise add it
+echo.
+CALL :projectExists PROJECT_EXISTS
+
+if %PROJECT_EXISTS% (
+	echo Demo project already exists
+	echo.
+) else (
+	echo Project does not exist, importing in to container
+	echo.
+	
+	CALL :projectImported PROJECT_IMPORTED
+
+	if %PROJECT_IMPORTED% (
+		echo Imported project successfully
+		echo.
+	) else (
+	  echo Exiting now with Code ReadyContainer started, authoring environment
+	  echo is ready, but unable to import the demo project.
+	  echo.
+		GOTO :EOF
+	)
+)
+
+echo.
+echo Creating a new application using CRC Node.js catalog image
+echo.
+call oc new-app "nodejs:12~https://gitlab.com/redhatdemocentral/crc-%OCP_APP%-demo.git" --name="qlb-client-application" --context-dir="%PRJ_DIR%\application-ui" -e NODE_ENV="development" --build-env NODE_ENV="development"
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc new-app' node.js command!
+	echo.
+	GOTO :EOF
+)
+
+echo.
+echo Creating config-map for client application
+echo. 
+call oc create configmap qlb-client-application-config-map --from-file="%PRJ_DIR%\application-ui\config\config.js"
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc create' config-map command!
+	echo.
+	GOTO :EOF
+)
+
+echo.
+echo Attaching config-map as volume to client application
+echo.
+call oc patch deployment/qlb-client-application -p '{"spec":{"template":{"spec":{"volumes":[{"name": "volume-qlb-client-app-1", "configMap": {"name": "qlb-client-application-config-map", "defaultMode": 420}}]}}}}' 
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc patch' client volumes command!
+	echo.
+	GOTO :EOF
+)
+
+call oc patch deployment/qlb-client-application -p '{"spec":{"template":{"spec":{"containers":[{"name": "qlb-client-application", "volumeMounts":[{"name": "volume-qlb-client-app-1","mountPath":"/opt/app-root/src/config"}]}]}}}}'
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc patch' client containers command!
+	echo.
+	GOTO :EOF
+)
+
+echo.
+echo Patch the service to set targetPort to 3000
+echo.
+call oc patch svc/qlb-client-application --type='json' -p="[{'op': 'replace', 'path': '/spec/ports/0/targetPort', 'value': 3000}]"
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc patch' client targetPort command!
+	echo.
+	GOTO :EOF
+)
+
+echo.
+echo Expose the client application service (route)
+echo.
+call oc expose svc/qlb-client-application
+
+if not "%ERRORLEVEL%" == "0" (
+  echo.
+	echo Error occurred during 'oc expose' client route command!
+	echo.
+	GOTO :EOF
+)
+
+echo.
+echo ========================================================================
+echo =                                                                      =
+echo =  Log in to Red Hat Decision Manager to exploring decision logic      =
+echo =  development at:                                                     =
+echo =                                                                      =
 echo =   https://%OCP_APP%-rhdmcentr-%OCP_PRJ%.%HOST_APPS%     =
-echo =                                                                               =
-echo =    Log in: [ u:erics / p:redhatdm1! ]                                         =
-echo =                                                                               =
-echo =    Others:                                                                    =
-echo =            [ u:kieserver / p:redhatdm1! ]                                     =
-echo =                                                                               =
-echo =  Note: it takes a few minutes to expose the service...                        =
-echo =                                                                               =
-echo =================================================================================
+echo =                                                                      =
+echo =    Log in: [ u:erics / p:redhatdm1! ]                                =
+echo =                                                                      =
+echo =  See README.md for general details to run the various demo cases.    =
+echo =                                                                      =
+echo ========================================================================
 echo.
 
 GOTO :EOF
@@ -198,7 +387,7 @@ GOTO :EOF
 	
 :printDocs
 
- echo The default option is to run this using Code Ready Containers, an OpenShift Container
+  echo The default option is to run this using CodeReady Containers, an OpenShifContainer
   echo Platform for your local machine. This host has been set by default in the variables at
 	echo the top of this script. You can modify if needed for your own host and ports by mofifying
 	echo these variables:
@@ -206,7 +395,7 @@ GOTO :EOF
 	echo     HOST_IP=api.crc.testing
   echo     HOST_PORT=6443
 	echo.
-	echo It's also possible to install this project on a personal Code Ready Containers installation, just point
+	echo It's also possible to install this project on a personal CodeReady Containers installation, just point
   echo this installer at your installation by passing an IP address of the hosting cluster:
 	echo.
 	echo    $ init.bat IP
