@@ -31,19 +31,12 @@ or to install on CodeReady Containers which provides you with a local OCP cluste
 3. Run 'init.sh' or 'init.bat' file. 'init.bat' must be run with Administrative privileges:
 
 ```
-   # If using your own installation just point to your CodeReady Containers IP address
-   # as follows:
-   #
-   $ ./init.sh 192.168.99.100  # example for CRC.
-```
-
-```
    # If using the CodeReady Containers installation, just ensure a correctly set cluster 
    # address for the HOST_IP variable found at the top of the init.{sh|bat} files, for example:
    #
    # HOST_IP=api.crc.testing  
    # 
-   # Now just run the script without any IP address arguments and it picks up that hostname as follows:
+   # Now just run the script without any arguments and it picks up that hostname as follows:
    #
    $ ./init.sh
 ```
