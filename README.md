@@ -11,7 +11,7 @@ application written in AngularJS and PatternFly that showcases how web applicati
 consume decision services deployed on the decision server.
 
 This demo installs the Red Hat Decision Manager on OpenShift Container Platform on your local
-machine. It's leveraging CodeReady Continers and delivers a fully functioning container-native 
+machine. It's leveraging CodeReady Containers and delivers a fully functioning container-native 
 development experience.
 
 
