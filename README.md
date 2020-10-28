@@ -141,7 +141,7 @@ Running demo with frontend UI
 
 5. Open the deployed Quick Loan Bank application form: http://qlb-client-application-appdev-in-cloud.apps-crc.testing
 
-6. Fill in the form as follows and submit for evalutaion:
+6. Fill in the form as follows and submit for evaluation:
 
    ```
    Name: Eric D. Schabell
@@ -152,13 +152,14 @@ Running demo with frontend UI
 
    Yearly Income: 90000
 
-   Ammount: 250000
+   Amount: 250000
 
    Duration: 10
    ```
 
 Try to enter different values to see a loan get disapproved, for example, change above applicant age from 40 to 80 for 
-rejectoin based on age.
+rejection based on age.
+
 
 
 Notes:
