@@ -205,9 +205,16 @@ See the tagged releases for the following versions of the product:
   Red Hat Decision Manager 7.7 and Node.js provided container images to automatically install 
   the Quick Loan Bank demo.
 
+
 ![RHDM OCP app](docs/demo-images/rhdm-ocp-app.png)
 
+![RHDM age 60](docs/demo-images/rhdm-maxage-60.png)
+
+![RHDM age 70](docs/demo-images/rhdm-maxage-70.png)
+
 ![RHDM OCP app reject](docs/demo-images/rhdm-ocp-app-reject.png)
+
+![RHDM OCP app accept 60](docs/demo-images/rhdm-ocp-app-60-approval.png)
 
 ![OCP build app](docs/demo-images/rhdm-build-app.png)
 
