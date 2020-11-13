@@ -208,9 +208,9 @@ See the tagged releases for the following versions of the product:
 
 ![RHDM OCP app](docs/demo-images/rhdm-ocp-app.png)
 
-![RHDM age 60](docs/demo-images/rhdm-maxage-60.png)
-
 ![RHDM age 70](docs/demo-images/rhdm-maxage-70.png)
+
+![RHDM age 60](docs/demo-images/rhdm-maxage-60.png)
 
 ![RHDM OCP app reject](docs/demo-images/rhdm-ocp-app-reject.png)
 
