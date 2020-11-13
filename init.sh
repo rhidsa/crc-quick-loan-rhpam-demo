@@ -22,7 +22,7 @@ PV_CAPACITY=1Gi
 VERSION=77
 
 # qlb project details.
-PRJ_ID=loan-application
+PRJ_ID=loan-pre-approval
 PRJ_REPO="https://github.com/jbossdemocentral/rhdm7-qlb-loan-demo-repo.git"
 DELAY=300   # waiting max 5 min various container functions to startup.
 
@@ -197,7 +197,7 @@ echo "Processing to setup KIE-Server with CORS support..."
 echo
 oc process -f ${SUP_DIR}/rhdm${VERSION}-kieserver-cors.yaml \
 	-p DOCKERFILE_REPOSITORY="https://gitlab.com/redhatdemocentral/crc-quick-loan-bank-demo.git" \
-	-p DOCKERFILE_REF="master" \
+	-p DOCKERFILE_REF="main" \
 	-p DOCKERFILE_CONTEXT=${SUP_DIR}/rhdm${VERSION}-kieserver-cors \
 	| oc create -f -
  
