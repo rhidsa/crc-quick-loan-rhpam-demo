@@ -19,7 +19,7 @@ OCP_PRJ=appdev-in-cloud
 KIE_ADMIN_USER=erics
 KIE_ADMIN_PWD=redhatdm1!
 PV_CAPACITY=1Gi
-VERSION=77
+VERSION=78
 
 # qlb project details.
 PRJ_ID=loan-pre-approval
@@ -27,47 +27,7 @@ PRJ_REPO="https://github.com/jbossdemocentral/rhdm7-qlb-loan-demo-repo.git"
 DELAY=300   # waiting max 5 min various container functions to startup.
 
 # import container functions.
-source support/container-functions.sh
-
-# prints the documentation for this script.
-function print_docs() 
-{
-  echo "The default option is to run this using Code Ready Containers, an OpenShift Container"
-	echo "Platform for your local machine. This host has been set by default in the variables at"
-	echo "the top of this script. You can modify if needed for your own host and ports by mofifying"
-	echo "these variables:"
-	echo
-	echo "    HOST_IP=api.crc.testing"
-  echo "    HOST_PORT=6443"
-	echo
-	echo "It's also possible to install this project on a personal Code Ready Container installation, just point"
-  echo "this installer at your installation by passing an IP address of the hosting cluster:"
-	echo
-	echo "   $ ./init.sh IP"
-	echo
-	echo "IP could look like: 192.168.99.100"
-	echo
-	echo "Both methodes are validated by the install scripts."
-	echo
-}
-
-# check for a valid passed IP address.
-function valid_ip()
-{
-	local  ip=$1
-	local  stat=1
-
-	if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-		OIFS=$IFS
-		IFS='.'
-		ip=($ip)
-		IFS=$OIFS
-		[[ ${ip[0]} -le 255 && ${ip[1]} -le 255 && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
-		stat=$?
-	fi
-
-	return $stat
-}
+source ${SUP_DIR}/container-functions.sh
 
 # wipe screen.
 clear 
