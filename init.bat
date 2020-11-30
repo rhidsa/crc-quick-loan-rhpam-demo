@@ -22,7 +22,7 @@ set OCP_PRJ=appdev-in-cloud
 set KIE_ADMIN_USER=erics
 set KIE_ADMIN_PWD=redhatdm1!
 set PV_CAPACITY=1Gi
-set VERSION=77
+set VERSION=78
 
 REM Qlb project details.
 set PRJ_ID=loan-pre-approval
@@ -32,7 +32,7 @@ REM waiting max 5 min various container functions to startup.
 set DELAY=300   
 
 REM import container functions.
-call support\container-functions.bat
+call %SUP_DIR%\container-functions.bat
 
 REM wipe screen.
 cls
@@ -366,42 +366,4 @@ echo =                                                                      =
 echo ========================================================================
 echo.
 
-GOTO :EOF
-      
-
-:validateIP ipAddress [returnVariable]
-
-    setlocal 
-
-    set "_return=1"
-
-    echo %~1^| findstr /b /e /r "[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*" >nul
-
-    if not errorlevel 1 for /f "tokens=1-4 delims=." %%a in ("%~1") do (
-        if %%a gtr 0 if %%a lss 255 if %%b leq 255 if %%c leq 255 if %%d gtr 0 if %%d leq 254 set "_return=0"
-    )
-
-:endValidateIP
-
-    endlocal & ( if not "%~2"=="" set "%~2=%_return%" ) & exit /b %_return%
-	
-:printDocs
-
-  echo The default option is to run this using CodeReady Containers, an OpenShifContainer
-  echo Platform for your local machine. This host has been set by default in the variables at
-	echo the top of this script. You can modify if needed for your own host and ports by mofifying
-	echo these variables:
-	echo.
-	echo     HOST_IP=api.crc.testing
-  echo     HOST_PORT=6443
-	echo.
-	echo It's also possible to install this project on a personal CodeReady Containers installation, just point
-  echo this installer at your installation by passing an IP address of the hosting cluster:
-	echo.
-	echo    $ init.bat IP
-	echo.
-	echo IP could look like: 192.168.99.100
-	echo.
-	echo Both methodes are validated by the install scripts.
-	echo.
 
