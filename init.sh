@@ -5,7 +5,7 @@ PROJECT="git@gitlab.com:redhatdemocentral/crc-quick-loan-bank-demo.git"
 SRC_DIR=./installs
 PRJ_DIR=./projects
 SUP_DIR=./support
-OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/"
+OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.6/"
 
 # Adjust these variables to point to an OCP instance.
 OPENSHIFT_USER=developer
