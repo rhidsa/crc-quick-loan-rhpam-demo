@@ -1,5 +1,5 @@
-CodeReady Containers Quick Loan Bank Demo
-==========================================
+CodeReady Containers Quick Loan Bank Decision Management
+========================================================
 This demo project showcases the tooling available in Red Hat Decision Manager implementing 
 complex decision logic which can be exposed as a decision service. The Quick Loan Bank in this 
 demo uses technical rules, decision tables, guided rules with a Domain Specific Language, and 
@@ -13,6 +13,8 @@ consume decision services deployed on the decision server.
 This demo installs the Red Hat Decision Manager on OpenShift Container Platform on your local
 machine. It's leveraging CodeReady Containers and delivers a fully functioning container-native 
 development experience.
+
+![QLB process](docs/demo-images/qlb-decision-flow.png)
 
 
 Install on CodeReady Containers 
@@ -200,6 +202,10 @@ Supporting Articles
 Released versions
 -----------------
 See the tagged releases for the following versions of the product:
+
+- v1.2 - Supporting CodeReady Container 1.20.0 with OpenShift Container Platform 4.6.6 using 
+  Red Hat Decision Manager 7.8 and Node.js provided container images to automatically install 
+  the Quick Loan Bank demo.
 
 - v1.1 - Supporting CodeReady Container 1.19.0 with OpenShift Container Platform 4.6.3 using 
   Red Hat Decision Manager 7.8 and Node.js provided container images to automatically install 
