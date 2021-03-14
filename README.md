@@ -188,6 +188,10 @@ Released versions
 -----------------
 See the tagged releases for the following versions of the product:
 
+- v1.3 - Supporting CodeReady Container 1.23.1 with OpenShift Container Platform 4.7.0 using 
+  Red Hat Decision Manager 7.9 and Node.js provided container images to automatically install 
+  the Quick Loan Bank demo.
+
 - v1.2 - Supporting CodeReady Container 1.20.0 with OpenShift Container Platform 4.6.6 using 
   Red Hat Decision Manager 7.8 and Node.js provided container images to automatically install 
   the Quick Loan Bank demo.
