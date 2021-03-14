@@ -1,31 +1,31 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 labels:
   template: rhdm78-kieserver-cors
   group: xpaas
 metadata:
-  name: rhdm78-kieserver-cors
+  name: rhdm79-kieserver-cors
 objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: rhdm78-kieserver-cors
+    name: rhdm79-kieserver-cors
     annotations:
     labels:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    name: rhdm78-kieserver-cors
+    name: rhdm79-kieserver-cors
     annotations:
       description: Builds Red Hat Decision Manager KIE-Server image with CORS support.
     labels:
-      name: rhdm78-kieserver-cors
-      app: rhdm78-kieserver-cors
+      name: rhdm79-kieserver-cors
+      app: rhdm79-kieserver-cors
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: rhdm78-kieserver-cors:latest
+        name: rhdm79-kieserver-cors:latest
     source:
       contextDir: ${DOCKERFILE_CONTEXT}
       git:
@@ -36,7 +36,7 @@ objects:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: rhdm-kieserver-rhel8:7.8.0
+          name: rhdm-kieserver-rhel8:7.9.0
           namespace: openshift
       type: Docker
     triggers:
